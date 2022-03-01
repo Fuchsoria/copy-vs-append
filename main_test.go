@@ -24,6 +24,14 @@ func TestCopy(t *testing.T) {
 
 		require.NotEqual(t, sourceArr100[42], copiedArr[42])
 	})
+
+	// It won't work if we copy into nil array
+	t.Run("copy failed case", func(t *testing.T) {
+		var copiedArr []int
+		copy(copiedArr, sourceArr100)
+
+		require.Nil(t, copiedArr)
+	})
 }
 
 func TestAppend(t *testing.T) {
@@ -43,5 +51,13 @@ func TestAppend(t *testing.T) {
 		appenedArr[42] = 4242 // generated from 1 to 100, 4242 is new number
 
 		require.NotEqual(t, sourceArr100[42], appenedArr[42])
+	})
+
+	// If array is made we will have *2 length, first part with default values and second is our copy
+	t.Run("append failed case", func(t *testing.T) {
+		appenedArr := make([]int, len(sourceArr100))
+		appenedArr = append(appenedArr, sourceArr100...)
+
+		require.Len(t, appenedArr, len(sourceArr100)*2)
 	})
 }
